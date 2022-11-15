@@ -56,6 +56,7 @@ class SiteController extends Controller
 
         $request = file_get_contents("php://input");
         $data = json_decode($request, true);
+        
         try {
             // Create Telegram API object
             $telegram = new Telegram($this->bot_api_key, $this->bot_username);
@@ -63,10 +64,14 @@ class SiteController extends Controller
             // Handle telegram webhook request
            // $telegram->handle();
 
-            $result = Request::sendMessage([
-                'chat_id' => 725086949,
-                'text'    => 'Your utf8 text 😜 ...',
-            ]);
+            //берём юзера, если его нет, то создаём
+            echo "<pre>"; print_r($data);die();
+            
+            
+//            $result = Request::sendMessage([
+//                'chat_id' => 725086949,
+//                'text'    => 'Your utf8 text 😜 ...',
+//            ]);
 
         } catch (Longman\TelegramBot\Exception\TelegramException $e) {
             // Silence is golden!

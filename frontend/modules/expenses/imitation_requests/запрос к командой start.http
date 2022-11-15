@@ -1,0 +1,7 @@
+POST http://telegram-bots/expenses/site/
+Accept: application/json; charset=utf-8
+Content-Type: application/json; charset=utf-8
+Content-Length: 286
+
+{"update_id":786525392,
+  "message":{"message_id":59,"from":{"id":725086949,"is_bot":false,"first_name":"\u041c\u0430\u043a\u0441\u0438\u043c","last_name":"\u0413\u043d\u0435\u0434\u0430\u0448","username":"gnedash_maxim","language_code":"ru"},"chat":{"id":725086949,"first_name":"\u041c\u0430\u043a\u0441\u0438\u043c","last_name":"\u0413\u043d\u0435\u0434\u0430\u0448","username":"gnedash_maxim","type":"private"},"date":1668502634,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]}}

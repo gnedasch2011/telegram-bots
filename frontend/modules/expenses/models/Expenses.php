@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property int $value
  * @property string|null $created_at
- * @property int $users_chat_id
+ * @property int $user_chat_id
  *
- * @property UsersChat $usersChat
+ * @property userChat $userChat
  */
 class Expenses extends \yii\db\ActiveRecord
 {
@@ -30,10 +30,10 @@ class Expenses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['value', 'users_chat_id'], 'required'],
-            [['value', 'users_chat_id'], 'integer'],
+            [['value', 'user_chat_id'], 'required'],
+            [['value', 'user_chat_id'], 'integer'],
             [['created_at'], 'string', 'max' => 45],
-            [['users_chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersChat::class, 'targetAttribute' => ['users_chat_id' => 'id']],
+            [['user_chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserChat::class, 'targetAttribute' => ['user_chat_id' => 'id']],
         ];
     }
 
@@ -46,17 +46,17 @@ class Expenses extends \yii\db\ActiveRecord
             'id' => 'ID',
             'value' => 'Value',
             'created_at' => 'Created At',
-            'users_chat_id' => 'Users Chat ID',
+            'user_chat_id' => 'user Chat ID',
         ];
     }
 
     /**
-     * Gets query for [[UsersChat]].
+     * Gets query for [[userChat]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUsersChat()
+    public function getUserChat()
     {
-        return $this->hasOne(UsersChat::class, ['id' => 'users_chat_id']);
+        return $this->hasOne(UserChat::class, ['id' => 'user_chat_id']);
     }
 }

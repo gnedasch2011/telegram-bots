@@ -16,14 +16,14 @@ use Yii;
  *
  * @property UsersChat[] $usersChats
  */
-class Users extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'users';
+        return 'user';
     }
 
     /**
@@ -53,12 +53,12 @@ class Users extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[UsersChats]].
+     * Gets query for [[UserChats]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUsersChats()
+    public function getUserChats()
     {
-        return $this->hasMany(UsersChat::class, ['users_id' => 'id']);
+        return $this->hasMany(UserChat::class, ['user_id' => 'id']);
     }
 }

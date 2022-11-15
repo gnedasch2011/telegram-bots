@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property int $user_id
  * @property int $user_id_link
- * @property int $users_chat_id
+ * @property int $user_chat_id
  *
- * @property UsersChat $usersChat
+ * @property UserChat $userChat
  */
 class UserGroup extends \yii\db\ActiveRecord
 {
@@ -30,9 +30,9 @@ class UserGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'user_id_link', 'users_chat_id'], 'required'],
-            [['user_id', 'user_id_link', 'users_chat_id'], 'integer'],
-            [['users_chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersChat::class, 'targetAttribute' => ['users_chat_id' => 'id']],
+            [['user_id', 'user_id_link', 'user_chat_id'], 'required'],
+            [['user_id', 'user_id_link', 'user_chat_id'], 'integer'],
+            [['user_chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserChat::class, 'targetAttribute' => ['user_chat_id' => 'id']],
         ];
     }
 
@@ -45,17 +45,17 @@ class UserGroup extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'user_id_link' => 'User Id Link',
-            'users_chat_id' => 'Users Chat ID',
+            'user_chat_id' => 'User Chat ID',
         ];
     }
 
     /**
-     * Gets query for [[UsersChat]].
+     * Gets query for [[UserChat]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUsersChat()
+    public function getUserChat()
     {
-        return $this->hasOne(UsersChat::class, ['id' => 'users_chat_id']);
+        return $this->hasOne(UserChat::class, ['id' => 'user_chat_id']);
     }
 }
