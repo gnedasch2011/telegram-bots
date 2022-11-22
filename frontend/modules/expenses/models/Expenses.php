@@ -10,7 +10,9 @@ use Yii;
  * @property int $id
  * @property int $value
  * @property string|null $created_at
- * @property int $user_chat_id
+ * @property string|null $comment
+ * @property int $users_chat_id
+ * @property int $user_id
  *
  * @property userChat $userChat
  */
@@ -30,10 +32,10 @@ class Expenses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['value', 'user_chat_id'], 'required'],
-            [['value', 'user_chat_id'], 'integer'],
-            [['created_at'], 'string', 'max' => 45],
-            [['user_chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserChat::class, 'targetAttribute' => ['user_chat_id' => 'id']],
+            [['value', 'users_chat_id', 'user_id'], 'required'],
+            [['value', 'users_chat_id', 'created_at'], 'integer'],
+            [['comment'], 'string'],
+            [['users_chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserChat::class, 'targetAttribute' => ['users_chat_id' => 'chat_id']],
         ];
     }
 
@@ -46,7 +48,7 @@ class Expenses extends \yii\db\ActiveRecord
             'id' => 'ID',
             'value' => 'Value',
             'created_at' => 'Created At',
-            'user_chat_id' => 'user Chat ID',
+            'users_chat_id' => 'user Chat ID',
         ];
     }
 
@@ -57,6 +59,27 @@ class Expenses extends \yii\db\ActiveRecord
      */
     public function getUserChat()
     {
-        return $this->hasOne(UserChat::class, ['id' => 'user_chat_id']);
+        return $this->hasOne(UserChat::class, ['id' => 'users_chat_id']);
+    }
+
+    public static function addExpenses($data, $user_chat)
+    {
+        $expenses = new self;
+        $value = preg_replace('/[^0-9]/', '', $data['message']['text']);
+
+        $comment = preg_replace("/[^а-яёa-z, ]/iu", '', $data['message']['text']);
+
+        $expenses->value = $value;
+        $expenses->comment = $comment ?? null;
+        $expenses->created_at = $data['message']['date'];
+        $expenses->users_chat_id = $user_chat->chat_id;
+        $expenses->user_id = $user_chat->users_id;
+
+        if (!$expenses->save()) {
+            return false;
+        }
+
+        return false;
+
     }
 }

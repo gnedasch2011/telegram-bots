@@ -31,9 +31,12 @@ class UserChat extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['chat_id', 'user_id'], 'required'],
-            [['chat_id', 'user_id'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => user::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['chat_id'], 'required'],
+            [['chat_id'], 'integer'],
+            [['users_id'], 'safe'],
+            [['users_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['users_id' => 'user_id']],
+        ];
+        ['users_id', 'unique', 'targetAttribute' => ['users_id', 'chat_id'],
         ];
     }
 
@@ -45,7 +48,7 @@ class UserChat extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'chat_id' => 'Chat ID',
-            'user_id' => 'user ID',
+            'users_id' => 'user ID',
         ];
     }
 
@@ -76,6 +79,32 @@ class UserChat extends \yii\db\ActiveRecord
      */
     public function getuser()
     {
-        return $this->hasOne(user::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public static function initChat($data, $user)
+    {
+        if (!isset($data['message']['chat'])) {
+            return false;
+        }
+
+        $userChat = self::findOne([
+            'chat_id' => $data['message']['chat']['id'],
+            'users_id' => $user->user_id,
+        ]);
+
+        if ($userChat) {
+            return $userChat;
+        }
+
+
+        if (!$userChat) {
+            $userChat = new self();
+            $userChat->chat_id = $data['message']['chat']['id'];
+            $userChat->users_id = $user->user_id;
+            $userChat->save();
+        }
+
+        return $userChat;
     }
 }

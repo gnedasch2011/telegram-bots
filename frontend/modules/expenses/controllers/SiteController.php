@@ -4,6 +4,9 @@ namespace frontend\modules\expenses\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use frontend\modules\expenses\models\Expenses;
+use frontend\modules\expenses\models\User;
+use frontend\modules\expenses\models\UserChat;
 use Longman\TelegramBot\Request;
 use Longman\TelegramBot\Telegram;
 use Yii;
@@ -56,7 +59,7 @@ class SiteController extends Controller
 
         $request = file_get_contents("php://input");
         $data = json_decode($request, true);
-        
+
         try {
             // Create Telegram API object
             $telegram = new Telegram($this->bot_api_key, $this->bot_username);
@@ -64,10 +67,20 @@ class SiteController extends Controller
             // Handle telegram webhook request
            // $telegram->handle();
 
-            //берём юзера, если его нет, то создаём
-            echo "<pre>"; print_r($data);die();
-            
-            
+            if(isset($data['message']['from']['id'])){
+                //берём юзера, если его нет, то создаём
+                $user = User::initUser($data);
+
+                //проверяем привязку к чату, если нет то создаём привязку
+                $user_chat  = UserChat::initChat($data, $user);
+
+                //забираем данные расходов по маске число комментарий
+              $res =  Expenses::addExpenses($data, $user_chat);
+
+              //TODO сформировать ответ в виде таблицы и итогом кто сколько должен в общак или сколько должны ему, а так же кнопками удалить последнюю запись и подсчитать итог месяца, так же сделать возможность установки даты расчёта
+
+            }
+
 //            $result = Request::sendMessage([
 //                'chat_id' => 725086949,
 //                'text'    => 'Your utf8 text 😜 ...',

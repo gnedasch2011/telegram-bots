@@ -18,6 +18,9 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+
+    
+
     /**
      * {@inheritdoc}
      */
@@ -32,7 +35,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_bot'], 'integer'],
+            [['user_id'], 'required',],
+            [['is_bot'], 'default', 'value' => 0],
             [['username', 'first_name', 'last_name', 'language_code'], 'string', 'max' => 45],
         ];
     }
@@ -44,6 +48,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'user_id' => 'user_id',
             'username' => 'Username',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
@@ -60,5 +65,28 @@ class User extends \yii\db\ActiveRecord
     public function getUserChats()
     {
         return $this->hasMany(UserChat::class, ['user_id' => 'id']);
+    }
+
+    public static function initUser($data)
+    {
+        if (!isset($data['message']['from']['id'])) {
+            return false;
+        }
+
+        $user = self::findOne(['user_id' => $data['message']['from']['id']]);
+
+        if($user){
+            return $user;
+        }
+
+        if (!$user) {
+            $user = new self;
+            $user->attributes = $data['message']['from'];
+            $user->user_id = $data['message']['from']['id'];
+            
+            $user->save();
+        }
+
+        return $user;
     }
 }
