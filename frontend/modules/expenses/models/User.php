@@ -16,7 +16,7 @@ use Yii;
  *
  * @property UsersChat[] $usersChats
  */
-class User extends \yii\db\ActiveRecord
+class User extends IncludeDataBase
 {
 
     

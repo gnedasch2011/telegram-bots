@@ -14,7 +14,7 @@ use Yii;
  *
  * @property UserChat $userChat
  */
-class UserGroup extends \yii\db\ActiveRecord
+class UserGroup extends IncludeDataBase
 {
     /**
      * {@inheritdoc}
