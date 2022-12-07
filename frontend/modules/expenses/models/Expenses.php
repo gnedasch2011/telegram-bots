@@ -26,6 +26,12 @@ class Expenses extends \yii\db\ActiveRecord
         return 'expenses';
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::className(),  ['user_id' => 'user_id']);
+    }
+
+
     /**
      * {@inheritdoc}
      */

@@ -38,6 +38,7 @@ class User extends \yii\db\ActiveRecord
             [['user_id'], 'required',],
             [['is_bot'], 'default', 'value' => 0],
             [['username', 'first_name', 'last_name', 'language_code'], 'string', 'max' => 45],
+            ['username', 'unique', 'targetAttribute' => 'user_id']
         ];
     }
 

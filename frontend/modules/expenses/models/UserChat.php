@@ -52,6 +52,33 @@ class UserChat extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function getUsersExpenses()
+    {
+        $usersExpenses = Expenses::find()
+            ->select('expenses.user_id, sum(value) as commonEx, 	CONCAT_WS(" ", user.first_name, user.last_name) AS `fullName`')
+            ->joinWith('user')
+            ->where(['users_chat_id'=>$this->chat_id])
+           ->asArray()
+            ->groupBy('expenses.user_id')
+           ->all()
+        ;
+
+        return $usersExpenses;
+
+    }
+
+    public function getCommonExpenses()
+    {
+        $commonExpenses = Expenses::find()
+            ->select('sum(value) as commonEx')
+            ->where(['users_chat_id'=>$this->chat_id])
+             ->asArray()
+           ->all()
+        ;
+        return $commonExpenses;
+
+    }
     /**
      * Gets query for [[Expenses]].
      *
