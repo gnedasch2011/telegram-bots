@@ -59,6 +59,7 @@ class SiteController extends Controller
 
         $request = file_get_contents("php://input");
         $data = json_decode($request, true);
+        $myfile = file_put_contents('message.txt', $data.PHP_EOL , FILE_APPEND | LOCK_EX);
         try {
 
             // Create Telegram API object
@@ -87,9 +88,22 @@ class SiteController extends Controller
                 $countUsers = count($usersExpenses);
 
                 foreach ($usersExpenses as &$user) {
-                    $user['commonEx'] = round($user['commonEx']-($commonExpenses[0]['commonEx'] / $countUsers));
+                    $user['commonEx'] = round($user['commonEx'] - ($commonExpenses[0]['commonEx'] / $countUsers));
 
                 }
+
+                $keyboard = [
+                    'inline_keyboard' => [
+                        [
+                            [
+                                'text' => 'forward me to groups',
+                               // 'callback_data' => 'http:://yandex.ru',
+                                'url' => 'https:://yandex.ru'
+                            ],
+                        ]
+                    ]
+                ];
+
                 //Кнопки <сделать рассчёт сейчас>
 
                 //Кнопки <вывести все траты>
@@ -100,6 +114,7 @@ class SiteController extends Controller
                 $view = $this->renderPartial('resultExpenses', [
                     'commonExpenses' => $commonExpenses,
                     'usersExpenses' => $usersExpenses,
+
                 ]);
                 //return $this->renderAjax('view');
 
@@ -107,9 +122,12 @@ class SiteController extends Controller
                     'chat_id' => $user_chat->chat_id,
                     'text' => $view,
                     'parse_mode' => 'html',
+                    'reply_markup' => $keyboard
                 ]);
-                
-                echo "<pre>"; print_r($result);die();
+
+                echo "<pre>";
+                print_r($result);
+                die();
 
             }
 
