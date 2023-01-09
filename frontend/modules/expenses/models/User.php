@@ -74,7 +74,9 @@ class User extends IncludeDataBase
             return false;
         }
 
-        $user = self::findOne(['user_id' => $data['message']['from']['id']]);
+        $user = self::findOne([
+            'user_id' => $data['message']['from']['id']
+        ]);
 
         if($user){
             return $user;

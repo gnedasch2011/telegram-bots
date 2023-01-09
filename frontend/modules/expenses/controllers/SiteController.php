@@ -52,14 +52,21 @@ class SiteController extends Controller
 
     public $bot_api_key = '5762279127:AAGpWwnl6ymE0vh8Crgfsydw8wtC6ryjUvc';
     public $bot_username = 'generalExpensesBot';
-
+//        /expenses/site/index
     public function actionIndex()
     {
         //Имитация разных пользователей
 
         $request = file_get_contents("php://input");
         $data = json_decode($request, true);
-        $myfile = file_put_contents('message.txt', $data.PHP_EOL , FILE_APPEND | LOCK_EX);
+
+        $file_data_begin = print_r($request.PHP_EOL,true);
+
+        $file_data_begin.= file_get_contents(__DIR__.'/message.txt');
+
+        file_put_contents(__DIR__.'/message.txt', $file_data_begin , FILE_APPEND | LOCK_EX);
+
+
         try {
 
             // Create Telegram API object
