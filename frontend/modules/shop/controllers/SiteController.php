@@ -59,7 +59,9 @@ class SiteController extends Controller
 
     public $bot_api_key = '5762279127:AAGpWwnl6ymE0vh8Crgfsydw8wtC6ryjUvc';
     public $bot_username = 'generalExpensesBot';
-    public $user_chat_for_test = "-1001822793557";
+    //1001822793557 id чата бота
+    public $id_bot = "-1001822793557";
+    public $chat_id_for_test = "725086949";
 //        /shop/site/index
 
     public function actionIndex()
@@ -90,7 +92,7 @@ class SiteController extends Controller
         ];
 
         $result = Request::sendMessage([
-            'chat_id' => $this->user_chat_for_test,
+            'chat_id' => $this->chat_id_for_test,
             'text' => 'test',
             'parse_mode' => 'html',
             'reply_markup' => $keyboard
