@@ -4,6 +4,8 @@ namespace frontend\modules\shop\controllers;
 //test
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use Longman\TelegramBot\Request;
+use Longman\TelegramBot\Telegram;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -52,6 +54,49 @@ class SiteController extends Controller
         ];
     }
 
+
+    public $enableCsrfValidation = false;
+
+    public $bot_api_key = '5762279127:AAGpWwnl6ymE0vh8Crgfsydw8wtC6ryjUvc';
+    public $bot_username = 'generalExpensesBot';
+    public $user_chat_for_test = -1001822793557;
+//        /shop/site/index
+
+    public function actionIndex()
+    {
+
+        // Create Telegram API object
+        $telegram = new Telegram($this->bot_api_key, $this->bot_username);
+
+        $request = file_get_contents("php://input");
+        $data = json_decode($request, true);
+
+        $file_data_begin = print_r($request . PHP_EOL, true);
+
+        $file_data_begin .= file_get_contents(__DIR__ . '/logs_request_for_shop.txt');
+
+        file_put_contents(__DIR__ . '/logs_request_for_shop.txt', $file_data_begin, FILE_APPEND | LOCK_EX);
+
+        $keyboard = [
+            'inline_keyboard' => [
+                [
+                    [
+                        'text' => 'forward me to groups',
+                        // 'callback_data' => 'http:://yandex.ru',
+                        'url' => 'https:://yandex.ru'
+                    ],
+                ]
+            ]
+        ];
+
+        $result = Request::sendMessage([
+            'chat_id' => $this->user_chat_for_test,
+            'text' => 'test',
+            'parse_mode' => 'html',
+            'reply_markup' => $keyboard
+        ]);
+
+    }
     /**
      * {@inheritdoc}
      */
@@ -68,16 +113,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        echo "<pre>"; print_r('fd');die();
-        return $this->render('index');
-    }
 
     /**
      * Logs in a user.
