@@ -59,7 +59,7 @@ class SiteController extends Controller
 
     public $bot_api_key = '5762279127:AAGpWwnl6ymE0vh8Crgfsydw8wtC6ryjUvc';
     public $bot_username = 'generalExpensesBot';
-    public $user_chat_for_test = -1001822793557;
+    public $user_chat_for_test = "-1001822793557";
 //        /shop/site/index
 
     public function actionIndex()
