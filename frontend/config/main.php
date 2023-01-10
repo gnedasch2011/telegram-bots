@@ -51,5 +51,10 @@ return [
             'class' => 'frontend\modules\expenses\Module',
             // ... другие настройки модуля ...
         ],
+
+        'shop' => [
+            'class' => 'frontend\modules\shop\Module',
+            // ... другие настройки модуля ...
+        ],
     ],
 ];
