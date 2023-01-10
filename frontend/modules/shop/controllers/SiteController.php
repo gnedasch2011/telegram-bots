@@ -61,7 +61,7 @@ class SiteController extends Controller
     public $bot_username = 'generalExpensesBot';
     //1001822793557 id чата бота
     public $id_bot = "-1001822793557";
-    public $chat_id_for_test = "725086949";
+    public $chat_id_for_test = 725086949;
 
 //        /shop/site/index
 
@@ -92,8 +92,9 @@ class SiteController extends Controller
             ]
         ];
         try {
+
             $result = Request::sendMessage([
-                'chat_id' => $this->chat_id_for_test,
+                'chat_id' => 725086949,
                 'text' => 'test',
                 'parse_mode' => 'html',
                 'reply_markup' => $keyboard
