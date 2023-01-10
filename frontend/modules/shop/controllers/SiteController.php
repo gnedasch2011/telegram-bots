@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\controllers;
-
+//test
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
